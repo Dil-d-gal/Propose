@@ -1,5 +1,3 @@
-index.html
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,8 +92,6 @@ opacity:0;
 </head>
 
 <body>
-<div id="tapScreen" style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:9999;font-size:32px;color:white;cursor:pointer;">🌌 Tap to Open ❤️</div>
-
 
 <!-- Background song -->
 <audio id="bgSong" autoplay loop>
@@ -135,3 +131,96 @@ NAVI JI BANYI GAL ❤️❤️❤️ HOGI HAA ❤️
 </div>
 
 <script>
+
+/* Auto play fix for mobile */
+document.body.addEventListener("click",()=>{
+  document.getElementById("bgSong").play().catch(()=>{});
+},{once:true});
+
+/* Crazy NO button */
+function moveNo(){
+
+let btn=document.getElementById("noBtn");
+
+btn.style.position="absolute";
+
+btn.style.left=Math.random()*80+"%";
+
+btn.style.top=Math.random()*80+"%";
+
+btn.style.transform=
+`rotate(${Math.random()*720}deg)
+scale(${0.8+Math.random()})`;
+
+}
+
+/* Hearts */
+function hearts(){
+
+for(let i=0;i<80;i++){
+
+let h=document.createElement("div");
+
+h.className="heart";
+
+h.innerHTML=["❤️","💖","😍","🥰"][Math.floor(Math.random()*4)];
+
+h.style.left=Math.random()*100+"vw";
+
+document.body.appendChild(h);
+
+setTimeout(()=>{
+h.remove()
+},4000);
+
+}
+
+}
+
+/* YES click */
+function yesClick(){
+
+const bg = document.getElementById("bgSong");
+const yes = document.getElementById("yesSong");
+
+/* Stop background music */
+bg.pause();
+bg.currentTime = 0;
+
+/* Reset and play YES music */
+yes.pause();
+yes.currentTime = 0;
+
+yes.play()
+.then(() => {
+    console.log("YES song started");
+})
+.catch(err => {
+    console.log(err);
+});
+
+/* Show message */
+document.getElementById("loveMsg").style.display = "block";
+
+/* Hearts */
+hearts();
+
+/* Pushover */
+fetch("https://api.pushover.net/1/messages.json",{
+method:"POST",
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+body:new URLSearchParams({
+token:"am3g2syju4yajivhnvifhigd63sqcg",
+user:"uej6ctdafuu8u3n23m3s9ky1qjm54k",
+message:"NAVI JI BANYI GAL ❤️❤️❤️ HOGI HAA ❤️"
+})
+});
+
+}
+
+</script>
+
+</body>
+</html>
